@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-           id="com.parse.cordova.core.pushplugin"
+           id="org.apache.cordova.core.parseplugin"
       version="0.1.0">
     <name>phonegap-parse-plugin</name>
     <description>phonegap parse plugin</description>
@@ -15,6 +15,9 @@
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ParsePlugin">
                 <param name="android-package" value="org.apache.cordova.core.ParsePlugin" />
+            </feature>
+			 <feature name="ParsePlugin">
+                <param name="android-package" value="org.apache.cordova.core.SqliteController" />
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -33,6 +36,11 @@
               <category android:name="$PACKAGE_NAME" />
             </intent-filter>
           </receiver>
+		   <receiver android:name="org.apache.cordova.core.MyCustomReceiver" >
+            <intent-filter>
+                <action android:name="photonworld" />
+            </intent-filter>
+        </receiver>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest">
           <uses-permission android:name="android.permission.INTERNET" />
@@ -46,39 +54,10 @@
           <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
         </config-file>
 
-		<source-file src="src/android/parse/bolts-android-1.1.4.jar" target-dir="libs" framework="true" />
-        <source-file src="src/android/parse/Parse-1.8.2.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/parse/Parse-1.3.8.jar" target-dir="libs" framework="true" />
         <source-file src="src/android/ParsePlugin.java" target-dir="src/org/apache/cordova/core" />
-        <!--<source-file src="src/android/ParseApplication.java" target-dir="src/org/apache/cordova/core" />-->
-        
-        <info><![CDATA[
-A couple of changes are needed to receive push notifications when the app is not
-running on Android:
-
-1. Edit your AndroidManifest.xml and add the following as an attribute on your
-application tag:
-
-android:name="org.apache.cordova.core.ParseApplication"
-
-If you already have an application class (this is not common), you will need to
-merge the code in ParseApplication.java with it instead.
-
-2. Edit src/android/ParseApplication.java and change the following:
-
-<%=app.id%>: Replace with your package identifier (i.e. com.example.appname)
-<%=app.parse.app_id%>: Replace with your Parse App ID
-<%=app.parse.client_key%>: Replace with your Parse Client Key
-
-3. Edit plugin.xml and uncomment this line:
-
-<!--<source-file src="src/android/ParseApplication.java" target-dir="src/org/apache/cordova/core" />-->
-
-Without these changes, your app will crash when receiving push notifications
-when it is not running.
-
-If you have a build system, you may be able to automate this.
-]]>
-        </info>
+        <source-file src="src/android/SqliteController.java" target-dir="src/org/apache/cordova/core" />
+        <source-file src="src/android/MyCustomReceiver.java" target-dir="src/org/apache/cordova/core" />		
      </platform>
 
     <!-- ios -->
@@ -91,23 +70,29 @@ If you have a build system, you may be able to automate this.
         <header-file src="src/ios/CDVParsePlugin.h" />
         <source-file src="src/ios/CDVParsePlugin.m" />
 
-        <framework src="Accounts.framework" />
+        <!--<framework src="AssetsLibrary.framework" />-->
+        <!--<framework src="MobileCoreServices.framework" />-->
         <framework src="AudioToolbox.framework" />
         <framework src="CFNetwork.framework" />
         <framework src="CoreGraphics.framework" />
         <framework src="CoreLocation.framework" />
+        <framework src="libz.1.1.3.dylib" />
         <framework src="MobileCoreServices.framework" />
         <framework src="QuartzCore.framework" />
         <framework src="Security.framework" />
-        <framework src="Social.framework" />
         <framework src="StoreKit.framework" />
         <framework src="SystemConfiguration.framework" />
-
-        <framework src="libz.dylib" />
+        <framework src="AvFoundation.framework" />
+        <framework src="Social.framework" />
         <framework src="libsqlite3.dylib" />
-
-        <framework src="src/ios/Frameworks/Bolts.framework" custom="true" />
+        <framework src="AddressBook.framework" />
+        <framework src="CoreData.framework" />
+        <framework src="Twitter.framework" />
+        <framework src="Accounts.framework" />
+        <framework src="CFNetwork.framework" />
+        <framework src="Social.framework" />
         <framework src="src/ios/Frameworks/Parse.framework" custom="true" />
+         <framework src="src/ios/Frameworks/Bolts.framework" custom="true" />
     </platform>
-
+          
 </plugin>
